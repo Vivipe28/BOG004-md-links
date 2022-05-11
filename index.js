@@ -8,7 +8,7 @@ const { resolve } = require('path');
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 readline = require('readline');
 
-const mdLinks = (ruta) => {
+const resolveAndExist = (ruta) => {
   let pathResolve = path.resolve(ruta);
   return new Promise((resolve, reject) => {
     fs.access(pathResolve, constants.F_OK, (err) => {
@@ -130,36 +130,50 @@ const validationArrayLinks = (arrayLinks) => {
   })
 }
 
-const validateStatsOption = (arrayLinks, option) => {
-  return new Promise((resolve, reject) => {
-    let allLinks = arrayLinks.map(link => link.href)
-    let statusLink = arrayLinks.map(link => link.response)
+// const validateStatsOption = (arrayLinks, option) => {
+//   return new Promise((resolve, reject) => {
+//     let allLinks = arrayLinks.map(link => link.href)
+//     let statusLink = arrayLinks.map(link => link.response)
+//     let totalLinks = arrayLinks.length;
+//     let uniqueLinks = [...new Set(allLinks)];
+//     let brokenLinks = statusLink.toString().match(/FAIL/g);
+//     if (option.stats && !option.validate) {
+//       let statsResult = {
+//         Total: totalLinks,
+//         Unique: uniqueLinks.length,
+//       }
+//       resolve(console.table(statsResult))
+//     }
+//     if (option.stats && option.validate) {
+//       let statsResult = {
+//         Total: totalLinks,
+//         Unique: uniqueLinks.length,
+//         Broken: brokenLinks.length,
+//       }
+//       resolve(console.table(statsResult))
+//     }
+//     if(option.validate && !option.stats){
+//       resolve(console.log(arrayLinks))
+//     }
+//   })
+// }
+
+const validateStatsOption = (arrayLinks) => {
+    let allLinks = arrayLinks.map(link => link.href);
     let totalLinks = arrayLinks.length;
     let uniqueLinks = [...new Set(allLinks)];
-    let brokenLinks = statusLink.toString().match(/FAIL/g);
-    if (option.stats && !option.validate) {
+    
       let statsResult = {
         Total: totalLinks,
         Unique: uniqueLinks.length,
       }
-      resolve(console.table(statsResult))
-    }
-    if (option.stats && option.validate) {
-      let statsResult = {
-        Total: totalLinks,
-        Unique: uniqueLinks.length,
-        Broken: brokenLinks.length,
-      }
-      resolve(console.table(statsResult))
-    }
-    if(option.validate && !option.stats){
-      resolve(console.log(arrayLinks))
-    }
-  })
+      // (console.table(statsResult))
+      return statsResult;
+    
 }
 
   module.exports = {
-  mdLinks,
+  resolveAndExist,
   fileOrDirectory,
   readingFiles,
   validationArrayLinks,
