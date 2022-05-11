@@ -9,15 +9,3 @@ Hola bebe!!!!!
   * [Array - MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Arr/)
   * [Array - MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Arr/)
 
-const validateLinks = (link) => {
-  return new Promise((resolve, reject) => {  
-    fetch(link.href).then(data =>{   
-      let ValidateKeys = {
-        status: data.status,
-        statusText: data.statusText,
-      }
-      let finalStatusObject = Object.assign(link, ValidateKeys);
-      resolve(finalStatusObject)
-    })
-})
-}
