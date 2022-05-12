@@ -93,7 +93,7 @@ const readingFiles = (arrayFiles) => {
     })
     Promise.all(arrayLinks).then((result) => {
       if (result.flat().length === 0) {
-        reject('no found links')
+        reject('No found links')
       }
       resolve(result.flat())
     })
@@ -124,41 +124,12 @@ const validationArrayLinks = (arrayLinks) => {
       arrayValidateLinks.push(validateLinks(link))
     })
     Promise.all(arrayValidateLinks).then((result) => {
-      // console.log(result)
       resolve(result)
     })
   })
 }
 
-// const validateStatsOption = (arrayLinks, option) => {
-//   return new Promise((resolve, reject) => {
-//     let allLinks = arrayLinks.map(link => link.href)
-//     let statusLink = arrayLinks.map(link => link.response)
-//     let totalLinks = arrayLinks.length;
-//     let uniqueLinks = [...new Set(allLinks)];
-//     let brokenLinks = statusLink.toString().match(/FAIL/g);
-//     if (option.stats && !option.validate) {
-//       let statsResult = {
-//         Total: totalLinks,
-//         Unique: uniqueLinks.length,
-//       }
-//       resolve(console.table(statsResult))
-//     }
-//     if (option.stats && option.validate) {
-//       let statsResult = {
-//         Total: totalLinks,
-//         Unique: uniqueLinks.length,
-//         Broken: brokenLinks.length,
-//       }
-//       resolve(console.table(statsResult))
-//     }
-//     if(option.validate && !option.stats){
-//       resolve(console.log(arrayLinks))
-//     }
-//   })
-// }
-
-const validateStatsOption = (arrayLinks) => {
+const StatsOption = (arrayLinks) => {
     let allLinks = arrayLinks.map(link => link.href);
     let totalLinks = arrayLinks.length;
     let uniqueLinks = [...new Set(allLinks)];
@@ -167,15 +138,60 @@ const validateStatsOption = (arrayLinks) => {
         Total: totalLinks,
         Unique: uniqueLinks.length,
       }
-      // (console.table(statsResult))
+      console.table(statsResult);
       return statsResult;
     
 }
 
-  module.exports = {
-  resolveAndExist,
-  fileOrDirectory,
-  readingFiles,
-  validationArrayLinks,
-  validateStatsOption
+const validateStatsOption = (arrayLinks) => {
+  let allLinks = arrayLinks.map(link => link.href)
+  let statusLink = arrayLinks.map(link => link.response)
+  let totalLinks = arrayLinks.length;
+  let uniqueLinks = [...new Set(allLinks)];
+  let brokenLinks = statusLink.toString().match(/FAIL/g);  
+  let statsValidateResult = {
+      Total: totalLinks,
+      Unique: uniqueLinks.length,
+      Broken: brokenLinks.length,
+    }
+    console.table(statsValidateResult)
+    return statsValidateResult
+  
 }
+
+const mdLinks = (path, options) => {
+    return new Promise((res) => {
+        resolveAndExist(path)
+            .then(resolvePath => {
+                // console.log('This is absolute path', res)
+                return fileOrDirectory(resolvePath)
+            })
+            .then(arrayFiles => {
+                // console.log('Files found', response)
+                return readingFiles(arrayFiles)
+            })
+            .then(links => {
+                if (!options.stats && !options.validate) {
+                    res(links)
+                    console.log(links);
+                }
+                if (options.stats && !options.validate) {
+                    res(StatsOption(links))
+                }
+                return validationArrayLinks(links)
+            })
+            .then(linksValidated => {
+                if (!options.stats && options.validate) {
+                    console.log(linksValidated);
+                }
+                if (options.stats && options.validate) {
+                    res(validateStatsOption(linksValidated))
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    })
+}
+
+module.exports = {mdLinks}
