@@ -5,8 +5,13 @@ const path = require('path');
 const { access, constants } = require('fs')
 const { marked } = require('marked');
 const { resolve } = require('path');
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const fetch = require('node-fetch');
 readline = require('readline');
+const colors = require('colors')
+
+colors.setTheme({
+  err: 'magenta'
+});
 
 const resolveAndExist = (ruta) => {
   let pathResolve = path.resolve(ruta);
@@ -17,7 +22,7 @@ const resolveAndExist = (ruta) => {
         // console.log('Path exists ' + pathResolve)
         resolve(pathResolve.replaceAll(/\\/g, '/'))
       }
-      reject('Path does not exist')
+      reject('Path does not exist'.err)
     });
   })
 }
@@ -35,7 +40,7 @@ const fileOrDirectory = (ruta) => {
           resolve(ReadingDirectory(ruta))
         }
       }
-      reject('Is not or does not exist .md files')
+      reject('Is not or does not exist .md files'.err)
     })
   })
 }
@@ -93,7 +98,7 @@ const readingFiles = (arrayFiles) => {
     })
     Promise.all(arrayLinks).then((result) => {
       if (result.flat().length === 0) {
-        reject('No found links')
+        reject('No found links'.err)
       }
       resolve(result.flat())
     })
@@ -112,7 +117,7 @@ const validateLinks = (link) => {
         link.response = 'FAIL'
       }
       resolve(link)
-      reject('¡Something went wrong! no validate links ')
+      reject('¡Something went wrong! no validate links!'.err)
     })
   })
 }
@@ -138,7 +143,6 @@ const StatsOption = (arrayLinks) => {
         Total: totalLinks,
         Unique: uniqueLinks.length,
       }
-      console.table(statsResult);
       return statsResult;
     
 }
@@ -149,12 +153,21 @@ const validateStatsOption = (arrayLinks) => {
   let totalLinks = arrayLinks.length;
   let uniqueLinks = [...new Set(allLinks)];
   let brokenLinks = statusLink.toString().match(/FAIL/g);  
-  let statsValidateResult = {
+  let statsValidateResult = {};
+  if(brokenLinks === null) { 
+    statsValidateResult = {
+      Total: totalLinks,
+      Unique: uniqueLinks.length,
+      Broken: 0,
+    }
+  }
+  else{
+    statsValidateResult = {
       Total: totalLinks,
       Unique: uniqueLinks.length,
       Broken: brokenLinks.length,
-    }
-    console.table(statsValidateResult)
+  }
+}
     return statsValidateResult
   
 }
@@ -163,17 +176,14 @@ const mdLinks = (path, options) => {
     return new Promise((res) => {
         resolveAndExist(path)
             .then(resolvePath => {
-                // console.log('This is absolute path', res)
                 return fileOrDirectory(resolvePath)
             })
             .then(arrayFiles => {
-                // console.log('Files found', response)
                 return readingFiles(arrayFiles)
             })
             .then(links => {
                 if (!options.stats && !options.validate) {
-                    res(links)
-                    console.log(links);
+                    res(links)  
                 }
                 if (options.stats && !options.validate) {
                     res(StatsOption(links))
@@ -182,7 +192,7 @@ const mdLinks = (path, options) => {
             })
             .then(linksValidated => {
                 if (!options.stats && options.validate) {
-                    console.log(linksValidated);
+                    res(linksValidated);
                 }
                 if (options.stats && options.validate) {
                     res(validateStatsOption(linksValidated))
@@ -194,4 +204,4 @@ const mdLinks = (path, options) => {
     })
 }
 
-module.exports = {mdLinks}
+module.exports = {mdLinks, StatsOption, validateStatsOption}

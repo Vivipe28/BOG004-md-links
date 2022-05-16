@@ -1,15 +1,23 @@
 {
   "name": "md-links",
   "version": "0.1.0",
+  "type": "commonjs",
   "engines": {
     "node": ">=14.x"
   },
   "dependencies": {
+    "colors": "^1.4.0",
     "commander": "^9.2.0",
     "marked": "^4.0.15",
-    "node-fetch": "^3.2.4"
+    "node-fetch": "^2.6.7"
   },
   "bin": {
     "md-links": "./cli.js"
+  },
+  "devDependencies": {
+    "jest": "^28.1.0"
+  },
+  "scripts": {
+    "test": "jest --coverage"
   }
 }

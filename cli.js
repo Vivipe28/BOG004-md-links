@@ -15,6 +15,10 @@ if (process.argv.includes('--stats')) {
 const {mdLinks} = require('.');
 
 mdLinks(path, options)
+.then(result => {
+    console.log(result)
+})
+
 
 
 
