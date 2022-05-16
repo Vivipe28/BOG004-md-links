@@ -64,6 +64,7 @@ Y finalmente, si ejecutas el siguiente comando podrás ver las estadísticas de 
 
 ```sh
 md-links ./some/example.md --stats --validate
+
 Total: 3
 Unique: 3
 Broken: 1
