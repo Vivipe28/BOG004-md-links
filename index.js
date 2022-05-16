@@ -10,7 +10,8 @@ readline = require('readline');
 const colors = require('colors')
 
 colors.setTheme({
-  err: 'magenta'
+  err: 'magenta',
+  result: 'bgCyan'
 });
 
 const resolveAndExist = (ruta) => {
@@ -143,6 +144,7 @@ const StatsOption = (arrayLinks) => {
         Total: totalLinks,
         Unique: uniqueLinks.length,
       }
+      console.log('STATS: '.result)
       return statsResult;
     
 }
@@ -167,7 +169,7 @@ const validateStatsOption = (arrayLinks) => {
       Unique: uniqueLinks.length,
       Broken: brokenLinks.length,
   }
-}
+}   console.log('VALIDATE STATS: '.result);
     return statsValidateResult
   
 }
