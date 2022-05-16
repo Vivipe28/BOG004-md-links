@@ -34,7 +34,7 @@ npm i md-links vivipe28
 Para poder acceder a los links dentro de una ruta específica, ejecuta en consola el siguiente comando:
 
 ```sh
- <span style="color:cyan">md-links ./some/example.md</span>
+ md-links ./some/example.md
 
 href: http://google.com/,
 text: google,
@@ -44,7 +44,7 @@ fileMd: ./some/example.md
 Si deseas verificar el estado de validación de los links de la ruta de interés, ejecuta en consola
 
 ```sh
-<span style="color:cyan">md-links ./some/example.md --validate</span>
+md-links ./some/example.md --validate
 
 href: http://google.com/,
 text: google,
@@ -55,14 +55,15 @@ response: OK
 Ahora bien, podrás visualizar estadísticas simples a través del siguiente comando:
 
 ```sh
-<span style="color:cyan">md-links ./some/example.md --stats</span>
+md-links ./some/example.md --stats
+
 Total: 3
 Unique: 3
 ```
 Y finalmente, si ejecutas el siguiente comando podrás ver las estadísticas de validación:
 
 ```sh
-<span style="color:cyan">md-links ./some/example.md --stats</span>
+md-links ./some/example.md --stats --validate
 Total: 3
 Unique: 3
 Broken: 1
