@@ -34,7 +34,7 @@ npm i md-links vivipe28
 Para poder acceder a los links dentro de una ruta específica, ejecuta en consola el siguiente comando:
 
 ```sh
- md-links ./some/example.md
+md-links ./some/example.md
 
 href: http://google.com/,
 text: google,

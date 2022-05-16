@@ -206,4 +206,4 @@ const mdLinks = (path, options) => {
     })
 }
 
-module.exports = {mdLinks, StatsOption, validateStatsOption}
+module.exports = {mdLinks}
