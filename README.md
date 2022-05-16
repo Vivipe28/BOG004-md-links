@@ -26,7 +26,7 @@ Los desarrolladores podrán verificar si los links se repiten dentro de un respo
 Ejecuta en consola el siguiente comando
 
 ```sh
-npm i md-links vivipe28
+npm i md-links-vivianapr
 ```
 
 ## 3. Interfaz de línea de comandos
