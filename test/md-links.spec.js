@@ -2,7 +2,6 @@ const {mdLinks} = require('../index.js');
 
 const path = 'lolita.md'
 const path2 = 'md-files'
-const path3 = 'nolinks.md'
 
 describe('mdLink Function', () => {
   it('Should be a function', () => {
